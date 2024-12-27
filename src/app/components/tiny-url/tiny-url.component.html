@@ -1,0 +1,60 @@
+<div class="container">
+    <h2>TinyURL - Acortador de URLs</h2>
+
+    <form [formGroup]="tinyUrlForm" (ngSubmit)="onEncode()">
+        <!-- URL Larga -->
+        <div>
+            <label for="longUrl">URL Larga:</label>
+            <input id="longUrl" formControlName="longUrl" placeholder="Ingrese una URL larga" />
+            <div *ngIf="longUrl?.touched && longUrl?.invalid">
+                <small *ngIf="longUrl?.errors?.['required']">La URL es obligatoria.</small>
+                <small *ngIf="longUrl?.errors?.['minlength']">La URL debe tener al menos 10 caracteres.</small>
+                <small *ngIf="longUrl?.errors?.['maxlength']">La URL no debe superar los 250 caracteres.</small>
+                <small *ngIf="longUrl?.errors?.['invalidUrl']">La URL no es válida.</small>
+            </div>
+        </div>
+
+        <!-- Dominio -->
+        <div>
+            <label for="domain">Dominio:</label>
+            <input id="domain" formControlName="domain" placeholder="Dominio (ej. tinyurl.com)" />
+        </div>
+
+        <!-- Alias -->
+        <div>
+            <label for="alias">Alias:</label>
+            <input id="alias" formControlName="alias" placeholder="Alias (opcional)" />
+        </div>
+
+        <!-- Descripción -->
+        <div>
+            <label for="description">Descripción:</label>
+            <input id="description" formControlName="description" placeholder="Descripción (opcional)" />
+        </div>
+
+        <!-- Botón -->
+        <button type="submit" [disabled]="tinyUrlForm.invalid">Acortar</button>
+    </form>
+
+    <!-- Mostrar Error de la API -->
+    <div *ngIf="errorMessage" class="error-message">
+        <strong>Error:</strong> {{ errorMessage }}
+    </div>
+
+    <p *ngIf="shortUrl">
+        URL Acortada: <a [href]="shortUrl" target="_blank">{{ shortUrl }}</a>
+    </p>
+
+    <hr />
+
+    <!-- Mostrar Metadatos de la URL -->
+    <div *ngIf="metadata">
+        <h3>Detalles de la URL Acortada</h3>
+        <p><strong>Dominio:</strong> {{ metadata.domain }}</p>
+        <p><strong>Alias:</strong> {{ metadata.alias }}</p>
+        <p><strong>Creada el:</strong> {{ metadata.created_at }}</p>
+        <p><strong>Expira el:</strong> {{ metadata.expires_at || 'No aplica' }}</p>
+        <p><strong>Estado:</strong> {{ metadata.deleted ? 'Eliminada' : 'Activa' }}</p>
+        <p><strong>Analíticas Habilitadas:</strong> {{ metadata.analytics.enabled }}</p>
+    </div>
+</div>
