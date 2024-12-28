@@ -1,60 +1,68 @@
 <div class="container">
-    <h2>TinyURL - Acortador de URLs</h2>
-
+    <h2>TinyURL - Acortador y Decodificador de URLs</h2>
+  
+    <!-- Formulario para Acortar URL -->
     <form [formGroup]="tinyUrlForm" (ngSubmit)="onEncode()">
-        <!-- URL Larga -->
-        <div>
-            <label for="longUrl">URL Larga:</label>
-            <input id="longUrl" formControlName="longUrl" placeholder="Ingrese una URL larga" />
-            <div *ngIf="longUrl?.touched && longUrl?.invalid">
-                <small *ngIf="longUrl?.errors?.['required']">La URL es obligatoria.</small>
-                <small *ngIf="longUrl?.errors?.['minlength']">La URL debe tener al menos 10 caracteres.</small>
-                <small *ngIf="longUrl?.errors?.['maxlength']">La URL no debe superar los 250 caracteres.</small>
-                <small *ngIf="longUrl?.errors?.['invalidUrl']">La URL no es válida.</small>
-            </div>
+      <!-- URL Larga -->
+      <div>
+        <label for="longUrl">URL Larga:</label>
+        <input id="longUrl" formControlName="longUrl" placeholder="Ingrese una URL larga" />
+        <div *ngIf="longUrl?.touched && longUrl?.invalid">
+          <small *ngIf="longUrl?.errors?.['required']">La URL es obligatoria.</small>
+          <small *ngIf="longUrl?.errors?.['minlength']">La URL debe tener al menos 10 caracteres.</small>
+          <small *ngIf="longUrl?.errors?.['maxlength']">La URL no debe superar los 250 caracteres.</small>
+          <small *ngIf="longUrl?.errors?.['invalidUrl']">La URL no es válida.</small>
         </div>
-
-        <!-- Dominio -->
-        <div>
-            <label for="domain">Dominio:</label>
-            <input id="domain" formControlName="domain" placeholder="Dominio (ej. tinyurl.com)" />
-        </div>
-
-        <!-- Alias -->
-        <div>
-            <label for="alias">Alias:</label>
-            <input id="alias" formControlName="alias" placeholder="Alias (opcional)" />
-        </div>
-
-        <!-- Descripción -->
-        <div>
-            <label for="description">Descripción:</label>
-            <input id="description" formControlName="description" placeholder="Descripción (opcional)" />
-        </div>
-
-        <!-- Botón -->
-        <button type="submit" [disabled]="tinyUrlForm.invalid">Acortar</button>
+      </div>
+  
+      <!-- Dominio -->
+      <div>
+        <label for="domain">Dominio:</label>
+        <input id="domain" formControlName="domain" placeholder="Dominio (ej. tinyurl.com)" />
+      </div>
+  
+      <!-- Alias -->
+      <div>
+        <label for="alias">Alias:</label>
+        <input id="alias" formControlName="alias" placeholder="Alias (opcional)" />
+      </div>
+  
+      <!-- Descripción -->
+      <div>
+        <label for="description">Descripción:</label>
+        <input id="description" formControlName="description" placeholder="Descripción (opcional)" />
+      </div>
+  
+      <!-- Botón -->
+      <button type="submit" [disabled]="tinyUrlForm.invalid">Acortar</button>
     </form>
-
+  
     <!-- Mostrar Error de la API -->
     <div *ngIf="errorMessage" class="error-message">
-        <strong>Error:</strong> {{ errorMessage }}
+      <strong>Error:</strong> {{ errorMessage }}
     </div>
-
+  
     <p *ngIf="shortUrl">
-        URL Acortada: <a [href]="shortUrl" target="_blank">{{ shortUrl }}</a>
+      URL Acortada: <a [href]="shortUrl" target="_blank">{{ shortUrl }}</a>
     </p>
-
+  
     <hr />
-
-    <!-- Mostrar Metadatos de la URL -->
-    <div *ngIf="metadata">
-        <h3>Detalles de la URL Acortada</h3>
-        <p><strong>Dominio:</strong> {{ metadata.domain }}</p>
-        <p><strong>Alias:</strong> {{ metadata.alias }}</p>
-        <p><strong>Creada el:</strong> {{ metadata.created_at }}</p>
-        <p><strong>Expira el:</strong> {{ metadata.expires_at || 'No aplica' }}</p>
-        <p><strong>Estado:</strong> {{ metadata.deleted ? 'Eliminada' : 'Activa' }}</p>
-        <p><strong>Analíticas Habilitadas:</strong> {{ metadata.analytics.enabled }}</p>
+  
+    <!-- Formulario para Decodificar URL -->
+    <form [formGroup]="decodeForm" (ngSubmit)="onDecode()">
+      <label>URL Corta:</label>
+      <input formControlName="shortUrl" placeholder="Ingrese una URL corta" />
+      <label>Alias:</label>
+      <input formControlName="alias" placeholder="Alias de la URL" />
+      <button type="submit" [disabled]="decodeForm.invalid">Decodificar</button>
+    </form>
+  
+    <div *ngIf="decodeErrorMessage" class="error-message">
+      <strong>Error:</strong> {{ decodeErrorMessage }}
     </div>
-</div>
+  
+    <p *ngIf="longUrlDecoded">
+      URL Original: <a [href]="longUrlDecoded" target="_blank">{{ longUrlDecoded }}</a>
+    </p>
+  </div>
+  

@@ -25,3 +25,15 @@ export interface TinyUrlResponse {
   code: number;
   errors: string[];
 }
+export interface DecodeTinyUrlResponse {
+  data: {
+    domain: string;
+    alias: string;
+    deleted: boolean;
+    archived: boolean;
+    hits: number;
+    url: string;
+  };
+  code: number;
+  errors: string[];
+}
